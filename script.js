@@ -3,6 +3,7 @@ const navMenu = document.querySelector(".nav-menu");
 const navLinks = document.querySelectorAll(".nav-menu a");
 const projectToggles = document.querySelectorAll(".project-toggle");
 const footerYear = document.querySelector("#footer-year");
+const visitorCounter = document.querySelector("#visitor-counter");
 
 if (navToggle && navMenu) {
   navToggle.addEventListener("click", () => {
@@ -36,4 +37,21 @@ projectToggles.forEach((toggle) => {
 
 if (footerYear) {
   footerYear.textContent = String(new Date().getFullYear());
+}
+
+if (visitorCounter) {
+  fetch("https://danielg.goatcounter.com/counter/TOTAL.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Counter unavailable");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      visitorCounter.textContent = `${data.count} visits`;
+    })
+    .catch(() => {
+      visitorCounter.textContent = "Visit counter unavailable";
+    });
 }
